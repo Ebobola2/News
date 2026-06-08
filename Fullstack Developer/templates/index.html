@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewsFlow — Агрегатор новостей</title>
+  <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+  <!-- ───── Header ───── -->
+  <header class="header">
+    <div class="container">
+      <div class="header__inner">
+        <div class="logo">
+          <span class="logo__icon"></span>
+          <span class="logo__text">Великие Новости от team DEBIL</span>
+          <span class="logo__sub">Новостные новостей</span>
+        </div>
+        <div class="header__actions">
+          <span class="stats-badge">{{ total }} статей</span>
+          <button class="btn btn--refresh" onclick="document.getElementById('refreshForm').submit()">
+             Обновить
+          </button>
+          <button class="btn btn--theme" onclick="toggleTheme()" id="themeBtn">🌙</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <form id="refreshForm" action="/refresh" method="POST" style="display:none"></form>
+
+  <!-- ───── Search bar ───── -->
+  <div class="search-bar">
+    <div class="container">
+      <form action="/" method="GET" id="searchForm">
+        <input type="hidden" name="category" value="{{ current_category }}">
+        <div class="search-bar__inner">
+          <input
+            class="search-input"
+            type="text"
+            name="q"
+            value="{{ keyword }}"
+            placeholder=" Поиск по новостям..."
+            id="liveSearch"
+            autocomplete="off"
+          >
+          <button class="btn btn--search" type="submit">Найти</button>
+          {% if keyword %}
+          <a class="btn btn--clear" href="/?category={{ current_category }}">✕</a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ───── Category tabs ───── -->
+  <div class="categories">
+    <div class="container">
+      <div class="categories__list">
+        <a class="cat-tab {% if current_category == 'all' %}cat-tab--active{% endif %}"
+           href="/?category=all{% if keyword %}&q={{ keyword }}{% endif %}">
+          Все
+        </a>
+        {% for cat in categories %}
+        <a class="cat-tab {% if current_category == cat %}cat-tab--active{% endif %}"
+           href="/?category={{ cat }}{% if keyword %}&q={{ keyword }}{% endif %}">
+          {{ cat | capitalize }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ───── Main content ───── -->
+  <main class="main">
+    <div class="container">
+
+      {% if keyword %}
+      <div class="results-info">
+        Результаты поиска: «<strong>{{ keyword }}</strong>» — найдено {{ articles | length }} статей
+      </div>
+      {% endif %}
+
+      {% if articles %}
+      <div class="news-grid" id="newsGrid">
+        {% for article in articles %}
+        <article class="card" data-category="{{ article.category }}">
+          <div class="card__header">
+            <span class="card__source">{{ article.source }}</span>
+            <span class="card__cat card__cat--{{ article.category }}">{{ article.category }}</span>
+          </div>
+          <h2 class="card__title">
+            <a href="{{ article.url }}" target="_blank" rel="noopener">
+              {{ article.title }}
+            </a>
+          </h2>
+          <p class="card__summary">{{ article.summary[:200] }}{% if article.summary|length > 200 %}...{% endif %}</p>
+          <div class="card__footer">
+            <span class="card__date">{{ article.published[:16] if article.published else '' }}</span>
+            <a class="card__link" href="{{ article.url }}" target="_blank" rel="noopener">
+              Читать →
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-state__icon"></div>
+        <h3>Новости не найдены</h3>
+        <p>Нажмите «Обновить», чтобы загрузить свежие новости</p>
+      </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <!-- ───── Footer ───── -->
+  <footer class="footer">
+    <div class="container">
+      <p>NewsFlow — учебный проект | Источники: BBC News · Hacker News · Reuters</p>
+      <p>Автообновление каждый час · ML-классификация: TF-IDF + Logistic Regression</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

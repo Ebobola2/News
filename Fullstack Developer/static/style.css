@@ -1,0 +1,129 @@
+/* ── Reset & Variables ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f4f6fb;
+  --surface:   #ffffff;
+  --border:    #e2e8f0;
+  --text:      #1a202c;
+  --text-sub:  #718096;
+  --accent:    #3b82f6;
+  --accent-h:  #2563eb;
+  --radius:    12px;
+  --shadow:    0 2px 12px rgba(0,0,0,.08);
+  --trans:     .2s ease;
+}
+[data-theme="dark"] {
+  --bg:       #0f172a;
+  --surface:  #1e293b;
+  --border:   #334155;
+  --text:     #e2e8f0;
+  --text-sub: #94a3b8;
+  --shadow:   0 2px 12px rgba(0,0,0,.4);
+}
+
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif;
+       font-size: 15px; line-height: 1.6; transition: background var(--trans), color var(--trans); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-h); }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* ── Header ──────────────────────────────────────────────────── */
+.header { background: var(--surface); border-bottom: 1px solid var(--border);
+          box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+.header__inner { display: flex; align-items: center; justify-content: space-between;
+                 padding: 14px 0; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 8px; }
+.logo__icon { font-size: 26px; }
+.logo__text { font-size: 22px; font-weight: 700; color: var(--accent); }
+.logo__sub { font-size: 12px; color: var(--text-sub); }
+.header__actions { display: flex; align-items: center; gap: 10px; }
+.stats-badge { background: #eff6ff; color: var(--accent); font-size: 12px; font-weight: 600;
+               padding: 4px 10px; border-radius: 20px; }
+[data-theme="dark"] .stats-badge { background: #1e3a5f; }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn { border: none; cursor: pointer; border-radius: 8px; font-size: 14px;
+       font-weight: 600; padding: 7px 16px; transition: all var(--trans); }
+.btn--refresh { background: var(--accent); color: #fff; }
+.btn--refresh:hover { background: var(--accent-h); transform: translateY(-1px); }
+.btn--theme { background: var(--border); color: var(--text); font-size: 16px;
+              width: 38px; height: 38px; padding: 0; border-radius: 50%; }
+.btn--search { background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 0 8px 8px 0; }
+.btn--search:hover { background: var(--accent-h); }
+.btn--clear { background: #ef4444; color: #fff; display: flex; align-items: center;
+              padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer;
+              font-weight: 700; margin-left: 6px; transition: all var(--trans); }
+.btn--clear:hover { background: #dc2626; }
+
+/* ── Search bar ─────────────────────────────────────────────── */
+.search-bar { background: var(--surface); padding: 16px 0; border-bottom: 1px solid var(--border); }
+.search-bar__inner { display: flex; align-items: center; gap: 4px; }
+.search-input { flex: 1; padding: 10px 16px; border: 2px solid var(--border);
+                border-radius: 8px 0 0 8px; font-size: 15px; background: var(--bg);
+                color: var(--text); outline: none; transition: border var(--trans); }
+.search-input:focus { border-color: var(--accent); }
+
+/* ── Category tabs ───────────────────────────────────────────── */
+.categories { background: var(--surface); padding: 12px 0; border-bottom: 1px solid var(--border); }
+.categories__list { display: flex; gap: 8px; flex-wrap: wrap; }
+.cat-tab { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+           color: var(--text-sub); background: var(--bg); border: 1px solid var(--border);
+           transition: all var(--trans); }
+.cat-tab:hover, .cat-tab--active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── Main ────────────────────────────────────────────────────── */
+.main { padding: 28px 0 48px; }
+.results-info { margin-bottom: 20px; color: var(--text-sub); font-size: 14px; }
+
+/* ── News grid ───────────────────────────────────────────────── */
+.news-grid { display: grid;
+             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+             gap: 20px; }
+
+/* ── Card ────────────────────────────────────────────────────── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 20px; display: flex; flex-direction: column; gap: 10px;
+        box-shadow: var(--shadow); transition: transform var(--trans), box-shadow var(--trans); }
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+.card__header { display: flex; justify-content: space-between; align-items: center; }
+.card__source { font-size: 12px; font-weight: 600; color: var(--text-sub); text-transform: uppercase;
+                letter-spacing: .5px; }
+.card__title { font-size: 16px; font-weight: 700; line-height: 1.4; flex: 1; }
+.card__title a { color: var(--text); }
+.card__title a:hover { color: var(--accent); }
+.card__summary { font-size: 13px; color: var(--text-sub); line-height: 1.55; flex: 1; }
+.card__footer { display: flex; justify-content: space-between; align-items: center;
+                padding-top: 8px; border-top: 1px solid var(--border); margin-top: auto; }
+.card__date { font-size: 12px; color: var(--text-sub); }
+.card__link { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+/* ── Category badges ─────────────────────────────────────────── */
+.card__cat { font-size: 11px; font-weight: 700; padding: 3px 10px;
+             border-radius: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.card__cat--киберспорт         { background: #fae8ff; color: #7e22ce; }
+.card__cat--научные.открытия   { background: #e0f2fe; color: #0369a1; }
+.card__cat--военные.технологии { background: #fee2e2; color: #991b1b; }
+.card__cat--general            { background: #f1f5f9; color: #475569; }
+[data-theme="dark"] .card__cat--киберспорт         { background: #3b0764; color: #d8b4fe; }
+[data-theme="dark"] .card__cat--научные.открытия   { background: #0c2a3d; color: #7dd3fc; }
+[data-theme="dark"] .card__cat--военные.технологии { background: #450a0a; color: #fca5a5; }
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.empty-state { text-align: center; padding: 80px 20px; color: var(--text-sub); }
+.empty-state__icon { font-size: 64px; margin-bottom: 16px; }
+.empty-state h3 { font-size: 22px; margin-bottom: 8px; color: var(--text); }
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer { background: var(--surface); border-top: 1px solid var(--border);
+          padding: 20px 0; text-align: center; font-size: 13px; color: var(--text-sub);
+          line-height: 2; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .logo__sub { display: none; }
+  .news-grid { grid-template-columns: 1fr; }
+  .header__inner { flex-wrap: wrap; }
+}
